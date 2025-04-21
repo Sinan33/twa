@@ -284,7 +284,7 @@ if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true
     <div class="login-container">
         <div class="login-header">
             <div class="login-logo">
-                <img src="https://rayansu.com/3/wp-content/uploads/2021/05/new-logo.png" alt="Logo">
+                <img src="log.png" alt="Logo">
             </div>
             <h1 class="login-title">لوحة تحكم اختبار توازن</h1>
             <p class="login-subtitle">قم بتسجيل الدخول للوصول إلى لوحة التحكم</p>
@@ -328,8 +328,8 @@ if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true
             const errorMessage = document.getElementById('errorMessage');
             
             // Hard-coded credentials (as requested)
-            const VALID_USERNAME = 'aziz';
-            const VALID_PASSWORD = '123456';
+            const VALID_USERNAME = 'Aziz1977';
+            const VALID_PASSWORD = 'Aziz1977';
             
             loginForm.addEventListener('submit', function(e) {
                 e.preventDefault();

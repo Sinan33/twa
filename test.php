@@ -3063,7 +3063,7 @@ require_once 'config.php';
     <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-logo">
-            <img src="https://rayansu.com/3/wp-content/uploads/2021/05/new-logo.png" alt="Logo">
+            <img src="log.png" alt="Logo" class="logo">
         </div>
         <div class="loading-text" id="loadingText">جاري تحميل اختبار توازن للشخصية</div>
         <div class="spinner"></div>
@@ -3167,7 +3167,7 @@ require_once 'config.php';
     <!-- Simplified Header with only logo -->
     <header class="site-header">
         <div class="logo-container">
-            <img src="https://rayansu.com/3/wp-content/uploads/2021/05/new-logo.png" alt="Logo" class="logo">
+            <img src="log.png" alt="Logo" class="logo">
         </div>
     </header>
 
@@ -4452,8 +4452,12 @@ require_once 'config.php';
             }
 
             // حفظ النتائج في قاعدة البيانات
+            // Función corregida para guardar los resultados en la base de datos
             saveResultsToDatabase() {
-                // تحضير البيانات للإرسال
+                // Mostrar alerta de guardado
+                this.showAlert('جاري حفظ النتائج...', 'info');
+
+                // Preparar los datos para enviar
                 const data = {
                     personalInfo: this.userState.personalInfo,
                     results: this.userState.results,
@@ -4461,25 +4465,35 @@ require_once 'config.php';
                     selections: this.userState.selections
                 };
 
-                // استخدام fetch API لإرسال البيانات
-                fetch('save_results.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(response => response.json())
-                .then(result => {
-                    if (result.success) {
-                        console.log('تم حفظ النتائج بنجاح');
-                    } else {
-                        console.error('خطأ في حفظ النتائج:', result.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('خطأ في الإرسال:', error);
-                });
+                console.log('Enviando datos:', data);
+
+                // Usar fetch API para enviar los datos con ruta absoluta
+                fetch(window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1) + 'save_result.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(result => {
+                        if (result.success) {
+                            console.log('Resultados guardados exitosamente:', result);
+                            this.showAlert('تم حفظ النتائج بنجاح!', 'success');
+                        } else {
+                            console.error('Error al guardar resultados:', result.message);
+                            this.showAlert('حدث خطأ أثناء حفظ النتائج: ' + result.message, 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al enviar datos:', error);
+                        this.showAlert('حدث خطأ أثناء إرسال البيانات. يرجى المحاولة مرة أخرى.', 'error');
+                    });
             }
 
             // إضافة تأثير احتفالي
